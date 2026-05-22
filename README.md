@@ -106,5 +106,6 @@ fastapi
 uvicorn
 pydantic
 ```
-## author 
-   BALMUKUND PANDEY
+
+## Author
+Developed by BALMUKUND PANDEY.
