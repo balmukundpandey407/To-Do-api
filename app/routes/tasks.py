@@ -12,6 +12,7 @@ import models
 
 router = APIRouter()
 
+# Create all tables in the database
 Base.metadata.create_all(bind=engine)
 
 def generate_id():
