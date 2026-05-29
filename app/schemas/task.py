@@ -9,6 +9,7 @@ class Task(BaseModel):
     status: Annotated[Literal['Done','Pending'], Field(title="Completion status of the task",default='Pending')]
     created_at: datetime
     updated_at: datetime
+    owner_id: str
 
 class TaskCreate(BaseModel):
     title: str

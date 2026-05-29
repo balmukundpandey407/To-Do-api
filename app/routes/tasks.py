@@ -39,13 +39,13 @@ def create_task(task: TaskCreate , db: Session = Depends(get_db),current_user= D
 
     return JSONResponse(content={"message": "Task created successfully"}, status_code=201)
 
-@task_router.get("/tasks", response_model=list[Task])
+@task_router.get("/tasks", response_model=list[TaskCreate])
 def get_all_task(skip:int= Query(0, ge=0),limit:int= Query(5, ge=5, le=10), db: Session = Depends(get_db),current_user= Depends(get_current_user)):
      
     db_tasks = db.query(TaskModel).filter(TaskModel.owner_id == current_user.id).offset(skip).limit(limit).all()
     return db_tasks
 
-@task_router.get("/task/{task_id}", response_model=Task)
+@task_router.get("/task/{task_id}", response_model=TaskCreate)
 def get_task_by_ID(task_id:str, db: Session = Depends(get_db),current_user= Depends(get_current_user)):
      
     #Search for the task in the database
@@ -54,7 +54,7 @@ def get_task_by_ID(task_id:str, db: Session = Depends(get_db),current_user= Depe
         raise HTTPException(status_code=404, detail ='No task with task ID Found')   
     return db_task
 
-@task_router.patch("/task/{task_id}", response_model=Task)
+@task_router.patch("/task/{task_id}", response_model=TaskCreate)
 def update_task(task_id: str,task_update:TaskUpdate, db: Session = Depends(get_db),current_user= Depends(get_current_user)):
     
     db_task = db.query(TaskModel).filter(TaskModel.id == task_id).filter(TaskModel.owner_id == current_user.id).first()
@@ -74,7 +74,6 @@ def update_task(task_id: str,task_update:TaskUpdate, db: Session = Depends(get_d
 
     db.commit()
     db.refresh(db_task)
-
     return db_task
 
 @task_router.delete("/task/{task_id}")
@@ -87,7 +86,7 @@ def delete_task(task_id: str, db: Session = Depends(get_db),current_user= Depend
     db.commit()
     return JSONResponse(content={"message": "Task Deleted Succesfully"},status_code= 200)
     
-@task_router.get("/tasks/filter", response_model=list[Task])
+@task_router.get("/tasks/filter", response_model=list[TaskCreate])
 def status_of_Task(filter: Annotated[str, Query(...,description="Enter Pending or Done")],skip:int= Query(0, ge=0),limit:int= Query(5, ge=5, le=10), db: Session = Depends(get_db),current_user= Depends(get_current_user)):
     
 
@@ -105,7 +104,7 @@ def status_of_Task(filter: Annotated[str, Query(...,description="Enter Pending o
         raise HTTPException(status_code=404, detail='No tasks found with the specified filter.')
     return paginated
      
-@task_router.get("/tasks/search", response_model=list[Task])
+@task_router.get("/tasks/search", response_model=list[TaskCreate])
 def search_tasks(query: str, skip: int = Query(0, ge=0), limit: int = Query(5, ge=5, le=10), db: Session = Depends(get_db),current_user= Depends(get_current_user)):
     
     db_tasks = db.query(TaskModel).filter(
@@ -117,7 +116,7 @@ def search_tasks(query: str, skip: int = Query(0, ge=0), limit: int = Query(5, g
         raise HTTPException(status_code=404, detail='No tasks found with the specified query.')
     return paginated
 
-@task_router.get("/tasks/sort", response_model=list[Task])
+@task_router.get("/tasks/sort", response_model=list[TaskCreate])
 def sort_tasks(by: Annotated[str, Query(..., description="Enter 'created_at' or 'updated_at'")], order: str = 'asc', skip: int = Query(0, ge=0), limit: int = Query(5, ge=5, le=10), db: Session = Depends(get_db),current_user= Depends(get_current_user)):
 
     if by not in ['created_at', 'updated_at']:
