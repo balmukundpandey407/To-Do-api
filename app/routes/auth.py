@@ -1,11 +1,11 @@
 from fastapi import FastAPI, APIRouter, Depends,Header, HTTPException
-from schemas.user import UserCreate, Userout, Userupdate, UserLogin, UserToken
-from models.user import User, Base
+from app.schemas.user import UserCreate, Userout, Userupdate, UserLogin, UserToken
+from app.models.user import User, Base
 from bcrypt import checkpw, hashpw, gensalt
 import jwt
 from decouple import config
 import time
-from database import get_db, engine
+from app.database import get_db, engine
 from sqlalchemy.orm import Session
 from typing import Optional, Annotated
 import uuid

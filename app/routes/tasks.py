@@ -4,12 +4,11 @@ from typing import Annotated
 import json
 import datetime
 import uuid
-from schemas.task import TaskCreate, Task, TaskUpdate
+from app.schemas.task import TaskCreate, Task, TaskUpdate
 from sqlalchemy.orm import Session
-from database import get_db, engine
-from models.task import Base, Task as TaskModel
-import models.task
-from routes.auth import get_current_user
+from app.database import get_db, engine
+from app.models.task import Base, Task as TaskModel
+from app.routes.auth import get_current_user
 
 task_router = APIRouter()
 
