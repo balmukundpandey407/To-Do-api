@@ -6,89 +6,70 @@ This project demonstrates CRUD operations, filtering, searching, sorting, pagina
 
 ---
 
-## Features
+## Live Demo
 
-- Create, update, and delete tasks
-- Retrieve single or multiple tasks
-- Filter tasks by status
-- Search tasks by title or description
-- Sort tasks by created or updated time
-- Pagination support
-- UUID-based task IDs
-- PostgreSQL database integration
-- Clean project architecture
+API Documentation:
+
+https://to-do-api-687z.onrender.com/docs#/
 
 ---
+
+## Features
+
+- User Registration & Login
+- JWT Authentication
+- Password Hashing (bcrypt)
+- Protected Routes
+- Task CRUD Operations
+- Search, Filter & Sort
+- Pagination
+- UUID-based IDs
+- PostgreSQL Integration
+- User-specific Task Ownership
 
 ## Tech Stack
 
-- Python
 - FastAPI
 - PostgreSQL
 - SQLAlchemy
-- Pydantic
-- Uvicorn
+- JWT
+- bcrypt
+- Render
 
----
+## API Endpoints
 
-## Installation
+### Auth
+- POST `/register`
+- POST `/login`
 
-```bash
-git clone <repository-url>
-cd <project-folder>
+### Tasks
+- POST `/task`
+- GET `/tasks`
+- GET `/task/{task_id}`
+- PATCH `/task/{task_id}`
+- DELETE `/task/{task_id}`
+- GET `/tasks/filter`
+- GET `/tasks/search`
+- GET `/tasks/sort`
 
-pip install -r requirements.txt
-```
+## Concepts Practiced
 
----
+- REST APIs
+- CRUD Operations
+- Authentication & Authorization
+- SQLAlchemy ORM
+- Database Relationships
+- Pagination
+- Filtering & Searching
+- Dependency Injection
 
-## Run the Server
+## Future Improvements
 
-```bash
-uvicorn app.main:app --reload
-```
-
-Server will run at:
-
-```bash
-http://127.0.0.1:8000
-```
-
----
-
-## API Documentation
-
-- Swagger UI: `/docs`
-- ReDoc: `/redoc`
-
----
-
-## Main Endpoints
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/task` | Create a task |
-| GET | `/tasks` | Get all tasks |
-| GET | `/task/{task_id}` | Get task by ID |
-| PATCH | `/task/{task_id}` | Update task |
-| DELETE | `/task/{task_id}` | Delete task |
-
----
-
-## Requirements
-
-```txt
-fastapi
-uvicorn
-sqlalchemy
-psycopg2-binary
-pydantic
-python-dotenv
-```
-
----
+- Refresh Tokens
+- Alembic Migrations
+- Docker
+- Unit Testing
 
 ## Author
 
-Developed by BALMUKUND PANDEY
-````
+BALMUKUND PANDEY
