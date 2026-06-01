@@ -3,7 +3,7 @@ from app.schemas.user import UserCreate, Userout, Userupdate, UserLogin, UserTok
 from app.models.user import User, Base
 from bcrypt import checkpw, hashpw, gensalt
 import jwt
-from decouple import config
+import os
 import time
 from app.database import get_db, engine
 from sqlalchemy.orm import Session
@@ -11,8 +11,8 @@ from typing import Optional, Annotated
 import uuid
 
 
-JWT_SECRET_KEY = config("JWT_SECRET_KEY")
-JWT_ALGORITHM = config("JWT_ALGORITHM")
+JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
+JWT_ALGORITHM = os.getenv("JWT_ALGORITHM")
 
 auth_router = APIRouter()
 
