@@ -1,72 +1,23 @@
-from fastapi import FastAPI, APIRouter, Depends,Header, HTTPException
-from app.schemas.user import UserCreate, Userout, Userupdate, UserLogin, UserToken
+from fastapi import FastAPI, APIRouter, Depends, HTTPException
+from app.schemas.user import UserCreate, Userout, UserLogin, UserToken
 from app.models.user import User, Base
-from bcrypt import checkpw, hashpw, gensalt
-import jwt
-import os
-import time
 from app.database import get_db, engine
 from sqlalchemy.orm import Session
-from typing import Optional, Annotated
 import uuid
-
-
-JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
-JWT_ALGORITHM = os.getenv("JWT_ALGORITHM")
+from app.core.security import security, verify_password, hash_password, sign_jwt, decode_jwt
 
 auth_router = APIRouter()
-
-Auth_prefix = 'Bearer '
 
 # Create all tables in the database
 Base.metadata.create_all(bind=engine)
 
 
-def verify_password(plain_password: str, hashed_password: str) -> bool:
-    
-    if checkpw(plain_password.encode('utf-8'), hashed_password.encode('utf-8')):
-        return True
-    return False
-
-def hash_password(password: str) -> str:
-    return hashpw(password.encode('utf-8'), gensalt()).decode('utf-8')
-
-def sign_jwt(user_id: str):
-    payload = {
-        "user_id": user_id,
-        "exp": time.time() + 900  # Token expires in 15 minutes
-    }
-    token = jwt.encode(payload, JWT_SECRET_KEY, algorithm=JWT_ALGORITHM)
-    return token
-
-def decode_jwt(token: str):
-    try:
-        decoded_token = jwt.decode(token, JWT_SECRET_KEY, algorithms=[JWT_ALGORITHM])
-        return decoded_token if decoded_token["exp"] >= time.time() else None
-    except jwt.ExpiredSignatureError:
-        return None
-    except jwt.InvalidTokenError:
-        return None
-
 def get_current_user(
     db: Session = Depends(get_db),
-    authorization: Annotated[Optional[str], Header()] = None
+    credentials: HTTPAuthorizationCredentials = Depends(security)
 ):
 
-    if not authorization:
-        raise HTTPException(
-            status_code=401,
-            detail="Authorization header is missing"
-        )
-
-    if not authorization.startswith(Auth_prefix):
-        raise HTTPException(
-            status_code=401,
-            detail="Invalid token"
-        )
-
-    token = authorization[len(Auth_prefix):]
-
+    token = credentials.credentials
     decoded_token = decode_jwt(token)
 
     if not decoded_token:
