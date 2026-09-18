@@ -1,14 +1,14 @@
 
 # To-Do API
 
-A simple and structured REST API built using FastAPI for managing tasks.  
+A simple, deployed and structured REST API built using FastAPI for managing tasks.  
 This project demonstrates CRUD operations, filtering, searching, sorting, pagination, and PostgreSQL database integration using SQLAlchemy.
 
 ---
 
 ## Live Demo
 
-API Documentation:
+Live Documentation:
 
 https://to-do-api-687z.onrender.com/docs#/
 
